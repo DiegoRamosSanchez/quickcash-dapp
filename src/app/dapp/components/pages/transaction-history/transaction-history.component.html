@@ -1,0 +1,128 @@
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-3 sm:p-6 shadow-lg border border-gray-200 dark:border-gray-700 max-w-full">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-4 sm:mb-6">
+    <h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white truncate mr-2">Historial de Transacciones</h2>
+    <button 
+      *ngIf="isWalletConnected"
+      (click)="refreshTransactions()"
+      [disabled]="isLoading"
+      class="flex-shrink-0 p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+      <svg 
+        class="w-4 h-4 sm:w-5 sm:h-5" 
+        [class.animate-spin]="isLoading"
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="space-y-3 sm:space-y-4">
+    <!-- Wallet not connected -->
+    <div *ngIf="!isWalletConnected" class="text-center py-8 sm:py-12 px-4">
+      <svg class="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 dark:text-gray-600 mx-auto mb-3 sm:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+      </svg>
+      <p class="text-gray-500 dark:text-gray-400 text-base sm:text-lg font-medium">Conecta tu wallet</p>
+      <p class="text-gray-400 dark:text-gray-500 text-xs sm:text-sm mt-2">Para ver tu historial de transacciones</p>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="isWalletConnected && isLoading && transactions.length === 0" class="text-center py-8 sm:py-12 px-4">
+      <div class="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-orange-500 mx-auto mb-3 sm:mb-4"></div>
+      <p class="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Cargando transacciones...</p>
+    </div>
+
+    <!-- Error state -->
+    <div *ngIf="error" class="text-center py-6 sm:py-8 px-4">
+      <svg class="w-10 h-10 sm:w-12 sm:h-12 text-red-500 mx-auto mb-3 sm:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <p class="text-red-600 dark:text-red-400 font-medium text-sm sm:text-base break-words">{{ error }}</p>
+      <button 
+        (click)="refreshTransactions()"
+        class="mt-3 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs sm:text-sm transition-colors duration-200">
+        Reintentar
+      </button>
+    </div>
+
+    <!-- No transactions -->
+    <div *ngIf="isWalletConnected && !isLoading && !error && transactions.length === 0" class="text-center py-8 sm:py-12 px-4">
+      <svg class="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 dark:text-gray-600 mx-auto mb-3 sm:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+      </svg>
+      <p class="text-gray-500 dark:text-gray-400 text-base sm:text-lg font-medium">No hay transacciones</p>
+      <p class="text-gray-400 dark:text-gray-500 text-xs sm:text-sm mt-2">Las transacciones aparecerán aquí cuando realices operaciones</p>
+    </div>
+
+    <!-- Transaction list -->
+    <div *ngIf="displayedTransactions.length > 0" class="space-y-2 sm:space-y-3">
+      <div 
+        *ngFor="let transaction of displayedTransactions; trackBy: trackByHash"
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 space-y-3 sm:space-y-0">
+        
+        <!-- Transaction info -->
+        <div class="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+          <!-- Icon -->
+          <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0" [class]="getTransactionColor(transaction)">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getTransactionIcon(transaction)"></path>
+            </svg>
+          </div>
+
+          <!-- Details -->
+          <div class="min-w-0 flex-1">
+            <p class="font-medium text-gray-900 dark:text-white text-sm sm:text-base truncate">{{ getTransactionType(transaction) }}</p>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 space-y-1 sm:space-y-0">
+              <div class="flex items-center space-x-1 min-w-0">
+                <span class="flex-shrink-0">{{ transaction.isOutgoing ? 'A:' : 'De:' }}</span>
+                <span class="truncate">{{ formatAddress(transaction.isOutgoing ? transaction.to : transaction.from) }}</span>
+              </div>
+              
+              <!-- Status badge -->
+              <span 
+                class="px-2 py-1 rounded-full text-xs font-medium inline-block w-fit"
+                [class]="transaction.status === 'confirmed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
+                        transaction.status === 'failed' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' : 
+                        'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'">
+                {{ transaction.status === 'confirmed' ? 'Confirmada' : 
+                   transaction.status === 'failed' ? 'Fallida' : 'Pendiente' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amount and actions -->
+        <div class="flex items-center justify-between sm:block sm:text-right flex-shrink-0">
+          <p class="font-semibold text-sm sm:text-base" [class]="getValueColor(transaction)">
+            {{ getValuePrefix(transaction) }}{{ formatValue(transaction.value) }} {{ networkSymbol }}
+          </p>
+          <div class="flex items-center space-x-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+            <span class="hidden sm:inline">{{ formatDate(transaction.timestamp) }}</span>
+            <span class="sm:hidden">{{ formatDate(transaction.timestamp) }}</span>
+            <a 
+              [href]="getExplorerUrl(transaction.hash)"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200 flex-shrink-0">
+              <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load more button -->
+    <div *ngIf="transactions.length > displayedTransactions.length" class="text-center pt-3 sm:pt-4">
+      <button 
+        (click)="loadMoreTransactions()"
+        class="w-full sm:w-auto px-4 sm:px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium text-sm sm:text-base transition-colors duration-200">
+        Cargar más transacciones
+      </button>
+    </div>
+  </div>
+</div>

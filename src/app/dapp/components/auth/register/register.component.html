@@ -1,0 +1,91 @@
+<!-- Register Modal -->
+<div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
+  <div class="w-full max-w-md animate-fadeIn dark-bg" (click)="$event.stopPropagation()">
+    <div class="bg-white/10 dark:bg-gray-900/50 backdrop-blur-lg rounded-2xl p-8 border border-white/20 dark:border-gray-700/50 shadow-2xl">
+      <!-- Close button -->
+      <div class="flex justify-end">
+        <button 
+          (click)="closeModal()"
+          class="text-gray-400 hover:text-white transition-colors duration-200">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Logo -->
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <span class="text-white font-bold text-2xl">Q</span>
+        </div>
+        <h1 class="text-2xl font-bold text-white">QuickCash</h1>
+      </div>
+
+      <div class="space-y-6">
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Correo electrónico</label>
+            <input 
+              type="email" 
+              [(ngModel)]="registerData.email"
+              placeholder="correo@ejemplo.com"
+              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Nombre de usuario</label>
+            <input 
+              type="text" 
+              [(ngModel)]="registerData.username"
+              placeholder="Ingrese un nombre de usuario"
+              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Contraseña</label>
+            <input 
+              type="password" 
+              [(ngModel)]="registerData.password"
+              placeholder="Ingrese una contraseña segura"
+              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Confirmar contraseña</label>
+            <input 
+              type="password" 
+              [(ngModel)]="registerData.confirmPassword"
+              placeholder="Confirme su contraseña"
+              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+          </div>
+        </div>
+
+        <div *ngIf="registerErrorMessage" class="p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
+          <p class="text-red-300 text-sm">{{ registerErrorMessage }}</p>
+        </div>
+
+        <div *ngIf="registerSuccessMessage" class="p-3 bg-green-500/20 border border-green-500/50 rounded-lg">
+          <p class="text-green-300 text-sm">{{ registerSuccessMessage }}</p>
+        </div>
+
+        <button 
+          (click)="register()"
+          class="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105">
+          Crear Cuenta
+        </button>
+
+        <div class="text-center">
+          <p class="text-gray-300 text-sm">
+            ¿Ya tienes cuenta? 
+            <button 
+              (click)="onSwitchToLogin()"
+              class="text-orange-400 hover:text-orange-300 font-medium ml-1">
+              Inicia sesión aquí
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

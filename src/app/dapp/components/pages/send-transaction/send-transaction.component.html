@@ -1,0 +1,216 @@
+<!-- Send Transaction Modal -->
+<div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/50 backdrop-blur-sm">
+  <div class="bg-white dark:bg-gray-900 rounded-lg sm:rounded-2xl shadow-2xl w-full max-w-sm sm:max-w-md lg:max-w-2xl border border-gray-200 dark:border-gray-700 max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-900 z-10">
+      <h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">Enviar {{ networkSymbol }}</h2>
+      <button (click)="closeTransactionModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <!-- Transaction Type Toggle -->
+      <div class="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+        <button 
+          (click)="toggleContractUse()"
+          [class]="!useContract ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400'"
+          class="flex-1 py-2 px-2 sm:px-4 rounded-md text-xs sm:text-sm font-medium transition-all duration-200">
+          <span class="hidden sm:inline">Envío Directo</span>
+          <span class="sm:hidden">Directo</span>
+        </button>
+        <button 
+          (click)="toggleContractUse()"
+          [class]="useContract ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400'"
+          class="flex-1 py-2 px-2 sm:px-4 rounded-md text-xs sm:text-sm font-medium transition-all duration-200">
+          <span class="hidden sm:inline">Usar Contrato</span>
+          <span class="sm:hidden">Contrato</span>
+        </button>
+      </div>
+
+      <!-- Contract Section -->
+      <div *ngIf="useContract" class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 sm:p-4 space-y-3 sm:space-y-4">
+        <h3 class="text-xs sm:text-sm font-medium text-blue-900 dark:text-blue-100">Configuración del Contrato</h3>
+        
+        <div>
+          <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dirección del Contrato</label>
+          <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+            <input 
+              type="text" 
+              [(ngModel)]="contractAddress"
+              placeholder="0x..."
+              [disabled]="isSending || isContractInitialized"
+              class="flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-sm">
+            <button
+              *ngIf="!isContractInitialized && contractAddress"
+              (click)="initializeContract()"
+              [disabled]="isSending"
+              class="w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 text-xs sm:text-sm">
+              Inicializar
+            </button>
+          </div>
+        </div>
+        
+        <div *ngIf="isContractInitialized" class="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg space-y-2 sm:space-y-0">
+          <div class="text-center sm:text-left">
+            <div class="text-xs sm:text-sm text-green-700 dark:text-green-300">Balance del contrato:</div>
+            <div class="font-medium text-green-900 dark:text-green-100 text-sm sm:text-base">{{ formattedContractBalance }} {{ networkSymbol }}</div>
+          </div>
+          <button
+            (click)="depositToContract()"
+            [disabled]="isSending || !sendAmount"
+            class="w-full sm:w-auto px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded text-xs sm:text-sm transition-colors duration-200 disabled:opacity-50">
+            Depositar
+          </button>
+        </div>
+      </div>
+
+      <!-- Contact Selector -->
+      <div>
+        <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Destinatario</label>
+        
+        <!-- Contact selector only shown when user is logged in and has contacts -->
+        <div *ngIf="isUserLoggedIn && hasContacts" class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 mb-3">
+          <select 
+            [(ngModel)]="selectedContactId" 
+            (change)="selectContact(selectedContactId)"
+            [disabled]="isSending"
+            class="flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+            <option value="">Seleccionar un contacto</option>
+            <option *ngFor="let contact of contactsList" [value]="contact.id">
+              <span class="hidden sm:inline">{{ contact.name }} ({{ shortenAddress(contact.address) }})</span>
+              <span class="sm:hidden">{{ contact.name }}</span>
+            </option>
+          </select>
+          <button 
+            (click)="toggleAddContact()" 
+            [disabled]="isSending"
+            class="w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 text-xs sm:text-sm">
+            {{ showAddContact ? 'Cancelar' : 'Nuevo' }}
+          </button>
+        </div>
+
+        <!-- Show "Add Contact" button when user is logged in but has no contacts -->
+        <div *ngIf="isUserLoggedIn && !hasContacts && !showAddContact" class="mb-3">
+          <button 
+            (click)="toggleAddContact()" 
+            [disabled]="isSending"
+            class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 text-xs sm:text-sm">
+            Añadir primer contacto
+          </button>
+        </div>
+
+        <!-- Login message for non-logged users -->
+        <div *ngIf="!isUserLoggedIn" class="mb-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+          <p class="text-yellow-700 dark:text-yellow-300 text-xs sm:text-sm">
+            💡 Inicia sesión para guardar y usar contactos frecuentes
+          </p>
+        </div>
+
+        <input 
+          type="text" 
+          [(ngModel)]="recipientAddress"
+          placeholder="0x..."
+          [disabled]="isSending"
+          class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+      </div>
+
+      <!-- Add Contact Form -->
+      <div *ngIf="showAddContact && isUserLoggedIn" class="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 sm:p-4 space-y-3 sm:space-y-4">
+        <h4 class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">Añadir Nuevo Contacto</h4>
+        
+        <div>
+          <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nombre</label>
+          <input 
+            type="text" 
+            [(ngModel)]="newContact.name" 
+            placeholder="Nombre del contacto"
+            class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+        </div>
+        
+        <div>
+          <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dirección</label>
+          <input 
+            type="text" 
+            [(ngModel)]="newContact.address" 
+            placeholder="0x..."
+            class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+        </div>
+        
+        <div>
+          <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notas (opcional)</label>
+          <textarea 
+            [(ngModel)]="newContact.notes" 
+            placeholder="Añade notas sobre este contacto..."
+            rows="2"
+            class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm resize-none"></textarea>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2 sm:gap-3">
+          <button 
+            (click)="addContact()" 
+            class="py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors duration-200 text-xs sm:text-sm">
+            Guardar
+          </button>
+          <button 
+            (click)="toggleAddContact()" 
+            class="py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 text-xs sm:text-sm">
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+      <!-- Amount Input -->
+      <div>
+        <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cantidad</label>
+        <div class="relative">
+          <input 
+            type="number" 
+            [(ngModel)]="sendAmount"
+            placeholder="0.0"
+            step="0.0001"
+            [disabled]="isSending"
+            class="w-full px-3 sm:px-4 py-2 sm:py-3 pr-12 sm:pr-16 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
+          <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">{{ networkSymbol }}</span>
+        </div>
+        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Balance disponible: {{ formattedBalance }} {{ networkSymbol }}
+        </p>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="sendError" class="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+        <p class="text-red-700 dark:text-red-300 text-xs sm:text-sm break-words">{{ sendError }}</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="grid grid-cols-2 gap-2 sm:gap-3 pt-2 sm:pt-4 sticky bottom-0 bg-white dark:bg-gray-900 pb-2 sm:pb-0">
+        <button 
+          (click)="closeTransactionModal()"
+          class="py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 text-xs sm:text-sm font-medium">
+          Cancelar
+        </button>
+        <button 
+          (click)="sendTransaction()"
+          [disabled]="isSending || !recipientAddress || !sendAmount || (useContract && !isContractInitialized)"
+          class="py-2.5 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm font-medium">
+          <span *ngIf="!isSending" class="block">
+            <span class="hidden sm:inline">Enviar {{ useContract ? 'vía Contrato' : 'Directamente' }}</span>
+            <span class="sm:hidden">Enviar</span>
+          </span>
+          <span *ngIf="isSending" class="flex items-center justify-center">
+            <svg class="animate-spin -ml-1 mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="hidden sm:inline">Enviando...</span>
+            <span class="sm:hidden">...</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

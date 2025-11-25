@@ -1,0 +1,17 @@
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.7);
+}
+
+.dark-bg {
+  background-color: rgba(31, 41, 55, 0.8); /* Gris oscuro con opacidad */
+  backdrop-filter: blur(8px);
+}
