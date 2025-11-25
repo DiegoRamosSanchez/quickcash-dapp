@@ -1,65 +1,87 @@
 <!-- Login Modal -->
-<div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
-  <div class="w-full max-w-md animate-fadeIn dark-bg" (click)="$event.stopPropagation()">
-    <div class="bg-white/10 dark:bg-gray-900/50 backdrop-blur-lg rounded-2xl p-8 border border-white/20 dark:border-gray-700/50 shadow-2xl">
+<div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fadeIn">
+  <div class="w-full max-w-md animate-fadeIn dark-bg rounded-3xl overflow-hidden shadow-2xl" (click)="$event.stopPropagation()">
+    <!-- Header con gradiente naranja -->
+    <div class="bg-gradient-to-r from-orange-600/20 to-red-600/20 border-b border-orange-500/30 p-8 relative">
       <!-- Close button -->
-      <div class="flex justify-end">
+      <div class="flex justify-end absolute top-4 right-4">
         <button 
           (click)="closeModal()"
-          class="text-gray-400 hover:text-white transition-colors duration-200">
+          class="text-gray-400 hover:text-orange-400 transition-colors duration-300 hover:scale-110">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
       </div>
-      
-      <!-- Logo -->
-      <div class="text-center mb-8">
-        <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <span class="text-white font-bold text-2xl">Q</span>
-        </div>
-        <h1 class="text-2xl font-bold text-white">QuickCash</h1>
-      </div>
 
+      <!-- Logo -->
+      <div class="text-center">
+        <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/40">
+          <span class="text-white font-bold text-3xl">Q</span>
+        </div>
+        <h1 class="text-3xl font-bold text-white mb-2">QuickCash</h1>
+        <p class="text-gray-300 text-sm">Plataforma de gestión empresarial</p>
+      </div>
+    </div>
+
+    <!-- Contenido del formulario -->
+    <div class="p-8">
       <div class="space-y-6">
         
+        <!-- Campos de entrada -->
         <div class="space-y-4">
+          <!-- Usuario -->
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">Nombre de usuario</label>
+            <label class="block text-sm font-semibold text-gray-200 mb-3">Nombre de usuario</label>
             <input 
               type="text" 
               [(ngModel)]="username"
+              (keypress)="onKeyPress($event)"
               placeholder="Ingrese su nombre de usuario"
-              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+              class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500/50 transition-all duration-200 hover:border-orange-500/30">
           </div>
 
+          <!-- Contraseña -->
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">Contraseña</label>
+            <label class="block text-sm font-semibold text-gray-200 mb-3">Contraseña</label>
             <input 
               type="password" 
               [(ngModel)]="password"
+              (keypress)="onKeyPress($event)"
               placeholder="Ingrese su contraseña"
-              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+              class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500/50 transition-all duration-200 hover:border-orange-500/30">
           </div>
         </div>
 
-        <div *ngIf="errorMessage" class="p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
-          <p class="text-red-300 text-sm">{{ errorMessage }}</p>
+        <!-- Mensaje de error -->
+        <div *ngIf="errorMessage" class="p-4 bg-red-500/20 border-l-4 border-red-500 rounded-lg backdrop-blur-sm">
+          <p class="text-red-300 text-sm font-medium">{{ errorMessage }}</p>
         </div>
 
+        <!-- Botón de inicio de sesión -->
         <button 
           (click)="login()"
-          class="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105">
-          Iniciar Sesión
+          [disabled]="isLoading || !isFormValid"
+          class="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:shadow-lg hover:shadow-orange-500/40 hover:scale-105 active:scale-95">
+          {{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
         </button>
 
-        <div class="text-center">
+        <!-- Separador -->
+        <div class="flex items-center gap-3">
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"></div>
+          <span class="text-gray-400 text-xs uppercase tracking-wider">O</span>
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"></div>
+        </div>
+
+        <!-- Enlace a registro -->
+        <div class="text-center pt-2">
           <p class="text-gray-300 text-sm">
             ¿No tienes cuenta? 
             <button 
               (click)="onSwitchToRegister()"
-              class="text-orange-400 hover:text-orange-300 font-medium ml-1">
+              class="text-orange-400 hover:text-orange-300 font-semibold ml-2 transition-colors duration-200 relative">
               Regístrate aquí
+              <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 hover:w-full"></span>
             </button>
           </p>
         </div>

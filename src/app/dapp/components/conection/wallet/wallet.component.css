@@ -9,11 +9,189 @@
   }
 }
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.6s ease-out;
 }
 
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Dark background with blur */
 .dark-bg {
-  background-color: rgba(31, 41, 55, 0.8); /* Gris oscuro con opacidad */
-  backdrop-filter: blur(8px);
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+}
+
+/* Professional backdrop blur effects */
+@supports (backdrop-filter: blur(1px)) {
+  .backdrop-blur-md {
+    backdrop-filter: blur(12px);
+  }
+
+  .backdrop-blur-lg {
+    backdrop-filter: blur(16px);
+  }
+
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Smooth transitions */
+button {
+  transition: all 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Focus states for accessibility */
+button:focus-visible {
+  outline: 2px solid rgba(234, 88, 12, 0.5);
+  outline-offset: 2px;
+}
+
+/* Disabled state styling */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button:disabled:hover {
+  transform: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(234, 88, 12, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(234, 88, 12, 0.7);
+}
+
+/* Text selection styling */
+::selection {
+  background-color: rgba(234, 88, 12, 0.3);
+  color: #fff;
+}
+
+/* Gradient text animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-text {
+  background-size: 200% auto;
+  animation: gradientShift 3s ease infinite;
+}
+
+/* Card hover effects */
+.group {
+  position: relative;
+}
+
+.group:hover {
+  transition: all 0.3s ease;
+}
+
+/* Modal entrance animation */
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-content {
+  animation: modalEnter 0.3s ease-out;
+}
+
+/* Loading spinner styles */
+.spinner-border {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+
+/* Button glow effect */
+.button-glow {
+  box-shadow: 0 0 20px rgba(234, 88, 12, 0.3), 0 0 40px rgba(234, 88, 12, 0.1);
+}
+
+.button-glow:hover {
+  box-shadow: 0 0 30px rgba(234, 88, 12, 0.5), 0 0 60px rgba(234, 88, 12, 0.2);
+}
+
+/* Enhanced shadow effects */
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .modal-content {
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+/* Improve button interactions on mobile */
+@media (hover: none) {
+  button:hover {
+    transform: none;
+  }
+  
+  button:active {
+    transform: scale(0.95);
+  }
 }

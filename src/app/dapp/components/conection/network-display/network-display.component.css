@@ -12,69 +12,7 @@
   animation: spin 1s linear infinite;
 }
 
-/* Smooth transitions */
-.transition-all {
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Hover effects */
-.hover-scale:hover {
-  transform: scale(1.02);
-}
-
-/* Network status indicators */
-.network-connected {
-  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
-}
-
-.network-disconnected {
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
-}
-
-.network-unknown {
-  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
-}
-
-/* Modal backdrop blur */
-.backdrop-blur-sm {
-  backdrop-filter: blur(4px);
-}
-
-/* Custom scrollbar for network list */
-.network-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.network-list::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
-}
-
-.network-list::-webkit-scrollbar-thumb {
-  background: rgba(249, 115, 22, 0.5);
-  border-radius: 3px;
-}
-
-.network-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(249, 115, 22, 0.7);
-}
-
-/* Dark mode scrollbar */
-.dark .network-list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.dark .network-list::-webkit-scrollbar-thumb {
-  background: rgba(249, 115, 22, 0.5);
-}
-
-.dark .network-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(249, 115, 22, 0.7);
-}
-
-/* Pulse animation for loading states */
+/* Pulse animation */
 @keyframes pulse {
   0%,
   100% {
@@ -87,4 +25,271 @@
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Hover effects */
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Network status indicators with glow */
+.network-connected {
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3), 0 0 20px rgba(34, 197, 94, 0.1);
+}
+
+.network-disconnected {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3), 0 0 20px rgba(239, 68, 68, 0.1);
+}
+
+.network-unknown {
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3), 0 0 20px rgba(245, 158, 11, 0.1);
+}
+
+/* Modal backdrop blur */
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Custom scrollbar for network list */
+.network-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.network-list::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 4px;
+}
+
+.network-list::-webkit-scrollbar-thumb {
+  background: rgba(234, 88, 12, 0.5);
+  border-radius: 4px;
+}
+
+.network-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(234, 88, 12, 0.7);
+}
+
+/* Enhanced shadow effects */
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Button styles */
+button {
+  transition: all 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:focus-visible {
+  outline: 2px solid rgba(234, 88, 12, 0.5);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button:disabled:hover {
+  transform: none;
+}
+
+/* Card hover effects */
+.group {
+  position: relative;
+}
+
+.group:hover {
+  transition: all 0.3s ease;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+}
+
+/* Text selection styling */
+::selection {
+  background-color: rgba(234, 88, 12, 0.3);
+  color: #fff;
+}
+
+/* Modal entrance animation */
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-content {
+  animation: modalEnter 0.3s ease-out;
+}
+
+/* Network icon animations */
+@keyframes iconPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.network-icon-active {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+/* Glow effect for active network */
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(234, 88, 12, 0.3), 0 0 40px rgba(234, 88, 12, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(234, 88, 12, 0.5), 0 0 60px rgba(234, 88, 12, 0.2);
+  }
+}
+
+.network-active-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .network-list {
+    max-height: 60vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal-content {
+    max-width: calc(100vw - 2rem);
+  }
+  
+  /* Adjust padding for mobile */
+  .p-8 {
+    padding: 1.5rem;
+  }
+}
+
+/* Smooth scroll behavior */
+.network-list {
+  scroll-behavior: smooth;
+}
+
+/* Loading state overlay */
+.loading-overlay {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+/* Success animation */
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-indicator {
+  animation: successPulse 0.6s ease-out;
+}
+
+/* Error shake animation */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.error-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Professional backdrop blur effects */
+@supports (backdrop-filter: blur(1px)) {
+  .backdrop-blur-lg {
+    backdrop-filter: blur(16px);
+  }
+
+  .backdrop-blur-md {
+    backdrop-filter: blur(12px);
+  }
+
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Improve button interactions on mobile */
+@media (hover: none) {
+  button:hover {
+    transform: none;
+  }
+  
+  button:active {
+    transform: scale(0.95);
+  }
 }

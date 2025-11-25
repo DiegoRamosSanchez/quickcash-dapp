@@ -1,0 +1,341 @@
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Spin animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Smooth transitions */
+button,
+input,
+textarea {
+  transition: all 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Focus states for accessibility */
+input:focus,
+textarea:focus,
+button:focus-visible {
+  outline: 2px solid rgba(234, 88, 12, 0.5);
+  outline-offset: 2px;
+}
+
+/* Disabled state styling */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button:disabled:hover {
+  transform: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(234, 88, 12, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(234, 88, 12, 0.7);
+}
+
+/* Text selection styling */
+::selection {
+  background-color: rgba(234, 88, 12, 0.3);
+  color: #fff;
+}
+
+/* Professional backdrop blur effects */
+@supports (backdrop-filter: blur(1px)) {
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Card hover effects */
+.group {
+  position: relative;
+}
+
+.group:hover {
+  transition: all 0.3s ease;
+}
+
+/* Enhanced shadow effects */
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Avatar animation */
+@keyframes avatarPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.avatar-pulse:hover {
+  animation: avatarPulse 0.6s ease-in-out;
+}
+
+/* Contact card entrance animation */
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-enter {
+  animation: cardEnter 0.4s ease-out;
+}
+
+/* Button glow effect */
+.button-glow {
+  box-shadow: 0 0 20px rgba(234, 88, 12, 0.3), 0 0 40px rgba(234, 88, 12, 0.1);
+}
+
+.button-glow:hover {
+  box-shadow: 0 0 30px rgba(234, 88, 12, 0.5), 0 0 60px rgba(234, 88, 12, 0.2);
+}
+
+/* Input focus glow */
+input:focus,
+textarea:focus {
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+}
+
+/* Loading spinner styles */
+.spinner-border {
+  border: 4px solid rgba(234, 88, 12, 0.3);
+  border-top-color: rgba(234, 88, 12, 1);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+
+/* Success message animation */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.success-message {
+  animation: slideInRight 0.3s ease-out;
+}
+
+/* Error message animation */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.error-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Truncate text with ellipsis */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  /* Adjust padding for mobile */
+  .rounded-3xl {
+    border-radius: 1.5rem;
+  }
+  
+  .p-8 {
+    padding: 1.5rem;
+  }
+  
+  /* Stack buttons vertically on mobile */
+  .flex.space-x-4 {
+    flex-direction: column;
+  }
+  
+  .flex.space-x-4 > * {
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+  
+  .flex.space-x-4 > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Hover effects for action buttons */
+button svg {
+  transition: transform 0.2s ease;
+}
+
+button:hover svg {
+  transform: scale(1.1);
+}
+
+/* Group hover effects */
+.group\/edit:hover,
+.group\/delete:hover {
+  transform: scale(1.05);
+}
+
+/* Gradient text animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-text {
+  background-size: 200% auto;
+  animation: gradientShift 3s ease infinite;
+}
+
+/* Copy button feedback */
+@keyframes copySuccess {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.copy-success {
+  animation: copySuccess 0.3s ease;
+}
+
+/* Empty state illustration pulse */
+@keyframes emptyStatePulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.empty-state-icon {
+  animation: emptyStatePulse 3s ease-in-out infinite;
+}
+
+/* Form input animations */
+input,
+textarea {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input:focus,
+textarea:focus {
+  transform: translateY(-2px);
+}
+
+/* Improve button interactions on mobile */
+@media (hover: none) {
+  button:hover {
+    transform: none;
+  }
+  
+  button:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Contact card hover lift effect */
+.group:hover {
+  box-shadow: 0 10px 30px -5px rgba(234, 88, 12, 0.2);
+}

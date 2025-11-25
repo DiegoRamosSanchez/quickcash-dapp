@@ -130,6 +130,24 @@ export class NetworkDisplayComponent {
     return "text-yellow-600 dark:text-yellow-400"
   }
 
+  getNetworkColorHeader(network: Network): string {
+    // Return different colors based on network for header display
+    switch (network.chainId) {
+      case 1: // Ethereum Mainnet
+        return "border-blue-500/30 text-blue-300"
+      case 11155111: // Sepolia
+        return "border-purple-500/30 text-purple-300"
+      case 137: // Polygon
+        return "border-purple-500/30 text-purple-300"
+      case 80001: // Mumbai
+        return "border-orange-500/30 text-orange-300"
+      case 17000: // Holesky
+        return "border-green-500/30 text-green-300"
+      default:
+        return "border-orange-500/30 text-orange-300"
+    }
+  }
+
   refreshNetwork(): void {
     // Force refresh network information
     if (this.isWalletConnected) {

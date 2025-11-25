@@ -1,0 +1,383 @@
+/* Spin animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Smooth transitions */
+button {
+  transition: all 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(234, 88, 12, 0.5);
+  outline-offset: 2px;
+}
+
+/* Disabled state styling */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button:disabled:hover {
+  transform: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(234, 88, 12, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(234, 88, 12, 0.7);
+}
+
+/* Text selection styling */
+::selection {
+  background-color: rgba(234, 88, 12, 0.3);
+  color: #fff;
+}
+
+/* Professional backdrop blur effects */
+@supports (backdrop-filter: blur(1px)) {
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Card hover effects */
+.group {
+  position: relative;
+}
+
+.group:hover {
+  transition: all 0.3s ease;
+}
+
+/* Enhanced shadow effects */
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Transaction card entrance animation */
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-enter {
+  animation: cardEnter 0.4s ease-out;
+}
+
+/* Staggered animation for transaction list */
+.transaction-list > * {
+  animation: cardEnter 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+.transaction-list > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.transaction-list > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.transaction-list > *:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.transaction-list > *:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.transaction-list > *:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+/* Loading spinner glow */
+@keyframes spinnerGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(234, 88, 12, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(234, 88, 12, 0.6);
+  }
+}
+
+.spinner-glow {
+  animation: spinnerGlow 2s ease-in-out infinite;
+}
+
+/* Transaction icon pulse */
+@keyframes iconPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.transaction-icon-pulse {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+/* Status badge animation */
+@keyframes badgeAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.status-badge {
+  animation: badgeAppear 0.3s ease-out;
+}
+
+/* Empty state illustration pulse */
+@keyframes emptyStatePulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.empty-state-icon {
+  animation: emptyStatePulse 3s ease-in-out infinite;
+}
+
+/* Truncate text with ellipsis */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Explorer link hover effect */
+a svg {
+  transition: transform 0.2s ease;
+}
+
+a:hover svg {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Load more button animation */
+@keyframes buttonPulse {
+  0%,
+  100% {
+    box-shadow: 0 10px 30px -5px rgba(234, 88, 12, 0.4);
+  }
+  50% {
+    box-shadow: 0 15px 40px -5px rgba(234, 88, 12, 0.6);
+  }
+}
+
+.button-pulse:hover {
+  animation: buttonPulse 2s ease-in-out infinite;
+}
+
+/* Gradient text animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-text {
+  background-size: 200% auto;
+  animation: gradientShift 3s ease infinite;
+}
+
+/* Transaction card hover lift effect */
+.transaction-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.transaction-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px -5px rgba(234, 88, 12, 0.2);
+}
+
+/* Icon container animation on hover */
+.icon-container {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.group:hover .icon-container {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  /* Adjust padding for mobile */
+  .rounded-3xl {
+    border-radius: 1.5rem;
+  }
+  
+  .p-8 {
+    padding: 1.5rem;
+  }
+  
+  /* Stack transaction info vertically on mobile */
+  .transaction-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  /* Adjust icon size on mobile */
+  .icon-container {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Smaller text on very small screens */
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-xl {
+    font-size: 1.25rem;
+  }
+}
+
+/* Improve button interactions on mobile */
+@media (hover: none) {
+  button:hover {
+    transform: none;
+  }
+  
+  button:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Refresh button rotation on click */
+@keyframes refreshRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.refresh-button.active {
+  animation: refreshRotate 1s ease-in-out;
+}
+
+/* Error state shake animation */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.error-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Success state bounce */
+@keyframes successBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.success-bounce {
+  animation: successBounce 0.6s ease-out;
+}

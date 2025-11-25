@@ -8,13 +8,15 @@ import { NETWORKS } from '../config/constants';
   providedIn: 'root'
 })
 export class EtherscanService {
-  private apiKey = 'SWUFCXSWKHF9W8BS8PDYT1KT783KJD36X4'; // Tu API key de Etherscan
+
+  private apiKey = '117T83DKGUXTAI36CG4GUIFD6KK6V8QHYS'; 
+
   private baseUrls = {
-    1: 'https://api.etherscan.io/api',
-    11155111: 'https://api-sepolia.etherscan.io/api',
-    137: 'https://api.polygonscan.com/api',
-    80001: 'https://api-mumbai.polygonscan.com/api',
-    17000: 'https://api-holesky.etherscan.io/api'
+    1: 'https://api.etherscan.io/v2/api',            
+    11155111: 'https://api.etherscan.io/v2/api',      
+    17000: 'https://api.etherscan.io/v2/api',         
+    137: 'https://api.polygonscan.com/v2/api',        
+    80001: 'https://api-testnet.polygonscan.com/v2/api' 
   };
 
   constructor(private http: HttpClient) { }
@@ -27,17 +29,24 @@ export class EtherscanService {
       return of([]);
     }
 
-    // Construir URL para obtener las transacciones normales (enviadas)
-    const url = `${baseUrl}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=desc&apikey=${this.apiKey}`;
+    // URL API V2 (nuevo formato)
+    const url =
+      `${baseUrl}?chainid=${chainId}` +
+      `&module=account&action=txlist` +
+      `&address=${address}` +
+      `&startblock=0&endblock=99999999&sort=desc` +
+      `&apikey=${this.apiKey}`;
 
     return this.http.get<any>(url).pipe(
       map(response => {
+
         if (response.status === '1' && response.result) {
           return this.processTransactions(response.result, address);
         } else {
           console.error('Error al obtener transacciones:', response.message);
           return [];
         }
+
       }),
       catchError(error => {
         console.error('Error en la solicitud a Etherscan:', error);
@@ -47,15 +56,18 @@ export class EtherscanService {
   }
 
   private processTransactions(txs: any[], address: string): Transaction[] {
-    // Filtrar y mapear las transacciones a nuestro formato
     return txs.slice(0, 50).map(tx => ({
       hash: tx.hash,
       from: tx.from,
       to: tx.to,
       value: tx.value,
-      status: tx.txreceipt_status === '1' ? 'confirmed' :
-              tx.txreceipt_status === '0' ? 'failed' : 'pending',
-      timestamp: parseInt(tx.timeStamp) * 1000, // Convertir a milisegundos
+      status:
+        tx.txreceipt_status === '1'
+          ? 'confirmed'
+          : tx.txreceipt_status === '0'
+          ? 'failed'
+          : 'pending',
+      timestamp: parseInt(tx.timeStamp) * 1000,
       isOutgoing: tx.from.toLowerCase() === address.toLowerCase(),
       gasUsed: tx.gasUsed,
       gasPrice: tx.gasPrice

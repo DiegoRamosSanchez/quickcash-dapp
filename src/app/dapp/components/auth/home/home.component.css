@@ -21,7 +21,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -29,6 +30,113 @@
   }
 }
 
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(234, 88, 12, 0.3), 0 0 40px rgba(234, 88, 12, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(234, 88, 12, 0.5), 0 0 60px rgba(234, 88, 12, 0.2);
+  }
+}
+
+/* Improved animations and styling for dark mode professional design */
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+/* Enhanced smooth scrolling and smooth transitions */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  scroll-behavior: smooth;
+}
+
+/* Professional card hover effects with orange glow */
+.group {
+  position: relative;
+}
+
+.group:hover {
+  transition: all 0.3s ease;
+}
+
+/* Enhanced button styling with professional appearance */
+button {
+  transition: all 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Professional section spacing and typography */
+section {
+  scroll-margin-top: 80px;
+}
+
+/* Enhanced gradient backgrounds with dark theme */
+.bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+}
+
+/* Improved shadow effects for professional appearance */
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Custom professional spacing utilities */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(234, 88, 12, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(234, 88, 12, 0.7);
+}
+
+/* Enhanced text selection styling */
+::selection {
+  background-color: rgba(234, 88, 12, 0.3);
+  color: #fff;
+}
+
+/* Professional backdrop blur effects */
+@supports (backdrop-filter: blur(1px)) {
+  .backdrop-blur-lg {
+    backdrop-filter: blur(12px);
+  }
+
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Enhanced mobile responsiveness for professional appearance */
+@media (max-width: 768px) {
+  h1 {
+    scroll-margin-top: 100px;
+  }
+
+  section {
+    padding: 2rem 1rem;
+  }
 }

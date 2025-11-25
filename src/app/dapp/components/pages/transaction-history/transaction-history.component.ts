@@ -169,6 +169,45 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Agregar estos métodos a tu clase TransactionHistoryComponent
+  getTransactionColorClass(transaction: Transaction): string {
+    if (transaction.status === "failed") {
+      return "bg-gradient-to-br from-red-600 to-red-500 text-white shadow-red-600/30";
+    }
+
+    return transaction.isOutgoing 
+      ? "bg-gradient-to-br from-orange-600 to-orange-500 text-white shadow-orange-600/30" 
+      : "bg-gradient-to-br from-green-600 to-green-500 text-white shadow-green-600/30";
+  }
+
+  getStatusBadgeClass(transaction: Transaction): string {
+    switch (transaction.status) {
+      case 'confirmed':
+        return 'bg-green-900/30 border border-green-500/30 text-green-300';
+      case 'failed':
+        return 'bg-red-900/30 border border-red-500/30 text-red-300';
+      default:
+        return 'bg-yellow-900/30 border border-yellow-500/30 text-yellow-300';
+    }
+  }
+
+  getStatusText(transaction: Transaction): string {
+    switch (transaction.status) {
+      case 'confirmed':
+        return 'Confirmada';
+      case 'failed':
+        return 'Fallida';
+      default:
+        return 'Pendiente';
+    }
+  }
+
+  getValueColorClass(transaction: Transaction): string {
+    return transaction.status === "failed" 
+      ? "text-red-400" 
+      : (transaction.isOutgoing ? "text-red-400" : "text-green-400");
+  }
+
   getExplorerUrl(hash: string): string {
     return this.etherscanService.getExplorerUrl(this.currentChainId, hash);
   }
